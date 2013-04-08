@@ -6,8 +6,6 @@ import io.postmaster.entity.Address;
 import io.postmaster.entity.Address.AddressValidationResult;
 import io.postmaster.errors.HTTPError;
 
-import java.lang.reflect.Field;
-
 import org.junit.Test;
 
 import com.google.gson.Gson;
@@ -20,46 +18,13 @@ public class APITest extends PostMasterTest {
 	public void testNoApiKey() throws HTTPError, SecurityException,
 			NoSuchFieldException, IllegalArgumentException,
 			IllegalAccessException {
-		PostMasterClient client = PostMasterClient.getInstance();
-		Field urlField = client.getClass().getDeclaredField("key");
-		urlField.setAccessible(true);
-		urlField.set(client, "");
+		//PostMasterClient client = PostMasterClient.getInstance();
+		PostMasterClient.setApiKey("");
 
 		Gson gson = new Gson();
 		Address address = gson.fromJson(AddressJson, Address.class);
 		AddressValidationResult result = address.validate();
 		assertEquals(result.getErrorCode().intValue(), 401);
-	}
-
-	@Test(expected = HTTPError.class)
-	public void testWrongBaseURL() throws HTTPError, SecurityException,
-			NoSuchFieldException, IllegalArgumentException,
-			IllegalAccessException {
-		PostMasterClient client = PostMasterClient.getInstance();
-
-		Field urlField = client.getClass().getDeclaredField("baseUrl");
-		urlField.setAccessible(true);
-		urlField.set(client, "http://wrong.addre.ss");
-		Gson gson = new Gson();
-		Address address = gson.fromJson(AddressJson, Address.class);
-		address.validate();
-
-	}
-
-	@Test(expected = IllegalStateException.class)
-	public void testNoBaseURL() throws HTTPError, SecurityException,
-			NoSuchFieldException, IllegalArgumentException,
-			IllegalAccessException {
-		PostMasterClient client = PostMasterClient.getInstance();
-
-		Field urlField = client.getClass().getDeclaredField("baseUrl");
-		urlField.setAccessible(true);
-		urlField.set(client, "");
-
-		Gson gson = new Gson();
-		Address address = gson.fromJson(AddressJson, Address.class);
-		AddressValidationResult result = address.validate();
-		result.getErrorCode();
 	}
 
 }

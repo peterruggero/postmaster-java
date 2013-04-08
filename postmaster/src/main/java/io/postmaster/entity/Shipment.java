@@ -4,15 +4,12 @@ import io.postmaster.core.PostMasterClient;
 import io.postmaster.entity.result.DeliveryTimeResult;
 import io.postmaster.entity.result.RateResult;
 import io.postmaster.entity.result.ShipmentCreationResult;
-import io.postmaster.entity.result.ShipmentFetchResult;
 import io.postmaster.entity.result.ShipmentTrackByReferenceResult;
 import io.postmaster.entity.result.ShipmentTrackResult;
 import io.postmaster.errors.HTTPError;
 
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,7 +21,8 @@ import com.google.gson.annotations.SerializedName;
 
 public class Shipment {
 
-	static final String FETCH_PATH = "/v1/shipments";
+	public static final String FETCH_PATH = "/v1/shipments";
+	public static final String RETREIVE_PATH = "/v1/shipments/%d";
 	static final String TRACK_PATH = "/v1/shipments/%d/track";
 	static final String TRACK_BY_REF_PATH = "/v1/track";
 	static final String VOID_PATH = "/v1/shipments/%d/void";
@@ -56,39 +54,50 @@ public class Shipment {
 	@SerializedName("tracking")
 	private String tracking;
 	@Expose
+	@SerializedName("service")
 	private String service;
+	@Expose
+	@SerializedName("reference")
+	private String reference;
 
-	
+	public static Shipment create() {
+		return new Shipment();
+	}
+
 	public String getService() {
 		return service;
 	}
 
-	public void setService(String service) {
+	public Shipment setService(String service) {
 		this.service = service;
+		return this;
 	}
 
 	public String getCarrier() {
 		return carrier;
 	}
 
-	public void setCarrier(String carrier) {
+	public Shipment setCarrier(String carrier) {
 		this.carrier = carrier;
+		return this;
 	}
 
 	public Number getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(Number createdAt) {
+	public Shipment setCreatedAt(Number createdAt) {
 		this.createdAt = createdAt;
+		return this;
 	}
 
 	public Address getFrom() {
 		return from;
 	}
 
-	public void setFrom(Address from) {
+	public Shipment setFrom(Address from) {
 		this.from = from;
+		return this;
 	}
 
 	public Number getId() {
@@ -99,72 +108,73 @@ public class Shipment {
 		return packageInfo;
 	}
 
-	public void setPackageInfo(Package packageInfo) {
+	public Shipment setPackageInfo(Package packageInfo) {
 		this.packageInfo = packageInfo;
+		return this;
 	}
 
 	public Number getPackageCount() {
 		return packageCount;
 	}
 
-	public void setPackageCount(Number packageCount) {
+	public Shipment setPackageCount(Number packageCount) {
 		this.packageCount = packageCount;
+		return this;
 	}
 
 	public List<Package> getPackages() {
 		return packages;
 	}
 
-	public void setPackages(List<Package> packages) {
+	public Shipment setPackages(List<Package> packages) {
 		this.packages = packages;
+		return this;
 	}
 
 	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public Shipment setStatus(String status) {
 		this.status = status;
+		return this;
 	}
 
 	public Address getTo() {
 		return to;
 	}
 
-	public void setTo(Address to) {
+	public Shipment setTo(Address to) {
 		this.to = to;
+		return this;
 	}
 
 	public String getTracking() {
 		return tracking;
 	}
 
-	public void setTracking(String tracking) {
+	public Shipment setTracking(String tracking) {
 		this.tracking = tracking;
+		return this;
+	}
+	
+	public String getReference() {
+		return reference;
 	}
 
-	public static ShipmentFetchResult fetch(String cursor,Integer limit)
-			throws HTTPError {
-		Map<String,String> params = new HashMap<String,String>();
-		if(cursor != null){
-			params.put("cursor", cursor);
-		}
-		if(limit!=null){
-			params.put("limit", String.valueOf(limit));
-		}
-		
-		JSONObject response = PostMasterClient.getInstance().get(FETCH_PATH,params);
-		return new ShipmentFetchResult(response);
+	public Shipment setReference(String reference) {
+		this.reference = reference;
+		return this;
 	}
 
-	public ShipmentCreationResult create() throws 
-			HTTPError {
+	public ShipmentCreationResult createShipment() throws HTTPError {
 
 		PostMasterClient client = PostMasterClient.getInstance();
 		GsonBuilder builder = new GsonBuilder();
-		Gson gsonExposeAware =  builder.excludeFieldsWithoutExposeAnnotation().create();
+		Gson gsonExposeAware = builder.excludeFieldsWithoutExposeAnnotation()
+				.create();
 		String jsonData = gsonExposeAware.toJson(this);
-		JSONObject response = client.post(FETCH_PATH, null,jsonData);
+		JSONObject response = client.post(FETCH_PATH, null, jsonData);
 		return new ShipmentCreationResult(response);
 	}
 
@@ -204,7 +214,7 @@ public class Shipment {
 		PostMasterClient client = PostMasterClient.getInstance();
 		// TODO server doesn't recognize from_zip parameter in sent json
 
-		JSONObject response = client.post(TIMES_PATH, time,null);
+		JSONObject response = client.post(TIMES_PATH, time, null);
 		return new DeliveryTimeResult(response);
 	}
 
@@ -212,7 +222,7 @@ public class Shipment {
 			throws UnsupportedEncodingException, HTTPError, JSONException {
 		PostMasterClient client = PostMasterClient.getInstance();
 
-		JSONObject response = client.post(RATES_PATH, rate,null);
+		JSONObject response = client.post(RATES_PATH, rate, null);
 		return new RateResult(response);
 	}
 

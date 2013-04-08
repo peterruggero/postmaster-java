@@ -13,16 +13,22 @@ public class Service {
 		return this.deliveryTimestamp;
 	}
 
-	public void setDeliveryTimestamp(Number delivery_timestamp) {
+	public Service setDeliveryTimestamp(Number delivery_timestamp) {
 		this.deliveryTimestamp = delivery_timestamp;
+		return this;
 	}
 
 	public String getService() {
 		return this.service;
 	}
 
-	public void setService(String service) {
+	public Service setService(String service) {
 		this.service = service;
+		return this;
+	}
+
+	public static Service create() {
+		return new Service();
 	}
 
 }

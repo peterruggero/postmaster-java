@@ -1,5 +1,7 @@
 package io.postmaster.entity;
 
+import java.util.List;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -23,61 +25,123 @@ public class Package {
 	@Expose
 	@SerializedName("width")
 	private Number width;
+	@Expose
+	@SerializedName("value")
+	private String value;
+
+	public static Package create() {
+		return new Package();
+	}
 
 	public String getDimensionUnits() {
 		return dimensionUnits;
 	}
 
-	public void setDimensionUnits(String dimensionUnits) {
+	public Package setDimensionUnits(String dimensionUnits) {
 		this.dimensionUnits = dimensionUnits;
+		return this;
 	}
 
 	public Number getHeight() {
 		return height;
 	}
 
-	public void setHeight(Number height) {
+	public Package setHeight(Number height) {
 		this.height = height;
+		return this;
 	}
 
 	public Number getLength() {
 		return length;
 	}
 
-	public void setLength(Number length) {
+	public Package setLength(Number length) {
 		this.length = length;
+		return this;
 	}
 
 	public String getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public Package setType(String type) {
 		this.type = type;
+		return this;
 	}
 
 	public Number getWeight() {
 		return weight;
 	}
 
-	public void setWeight(Number weight) {
+	public Package setWeight(Number weight) {
 		this.weight = weight;
+		return this;
 	}
 
 	public String getWeightUnits() {
 		return weightUnits;
 	}
 
-	public void setWeightUnits(String weightUnits) {
+	public Package setWeightUnits(String weightUnits) {
 		this.weightUnits = weightUnits;
+		return this;
 	}
 
 	public Number getWidth() {
 		return width;
 	}
 
-	public void setWidth(Number width) {
+	public String getValue() {
+		return value;
+	}
+
+	public Package setValue(String value) {
+		this.value = value;
+		return this;
+	}
+
+	public Package setValue(Number value) {
+		this.value = value.toString();
+		return this;
+	}
+	
+	public Package setWidth(Number width) {
 		this.width = width;
+		return this;
+	}
+
+	public Package setDimensions(Number width, Number height, Number length) {
+		this.width = width;
+		this.height = height;
+		this.length = length;
+		return this;
+	}
+
+	public Package setDimensions(Number... dimensions) {
+		if (dimensions.length > 3) {
+			throw new RuntimeException(
+					"Please specify maximum 3 dimensions: width, height and length");
+		}
+		this.setDimensionFromArray(dimensions);
+		return this;
+	}
+
+	public Package setDimensions(List<Number> dimensions) {
+		Number[] array = dimensions.toArray(new Number[dimensions.size()]);
+		this.setDimensionFromArray(array);
+		return this;
+	}
+
+	private void setDimensionFromArray(Number[] dimensions) {
+		if (dimensions.length >= 1) {
+			this.width = dimensions[0];
+		}
+		if (dimensions.length >= 2) {
+			this.height = dimensions[1];
+		}
+		if (dimensions.length >= 3) {
+			this.length = dimensions[2];
+		}
 	}
 
 }

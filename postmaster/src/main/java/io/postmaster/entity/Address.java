@@ -50,98 +50,145 @@ public class Address {
 	@SerializedName("zip_code")
 	private String zipCode;
 
+	public static Address create() {
+		return new Address();
+	}
+	
 	public String getCity() {
 		return city;
 	}
 
-	public void setCity(String city) {
+	public Address setCity(String city) {
 		this.city = city;
+		return this;
 	}
 
 	public String getCompany() {
 		return company;
 	}
 
-	public void setCompany(String company) {
+	public Address setCompany(String company) {
 		this.company = company;
+		return this;
 	}
 
 	public String getContact() {
 		return contact;
 	}
 
-	public void setContact(String contact) {
+	public Address setContact(String contact) {
 		this.contact = contact;
+		return this;
 	}
 
 	public String getCountry() {
 		return country;
 	}
 
-	public void setCountry(String country) {
+	public Address setCountry(String country) {
 		this.country = country;
+		return this;
 	}
 
 	public String getLine1() {
 		return line1;
 	}
 
-	public void setLine1(String line1) {
+	public Address setLine1(String line1) {
 		this.line1 = line1;
+		return this;
 	}
 
 	public String getLine2() {
 		return line2;
 	}
 
-	public void setLine2(String line2) {
+	public Address setLine2(String line2) {
 		this.line2 = line2;
+		return this;
 	}
 
 	public String getLine3() {
 		return line3;
 	}
 
-	public void setLine3(String line3) {
+	public Address setLine3(String line3) {
 		this.line3 = line3;
+		return this;
 	}
 
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
 
-	public void setPhoneNumber(String phoneNumber) {
+	public Address setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
+		return this;
 	}
 
 	public boolean isResidential() {
 		return residential;
 	}
 
-	public void setResidential(boolean residential) {
+	public Address setResidential(boolean residential) {
 		this.residential = residential;
+		return this;
 	}
 
 	public String getState() {
 		return state;
 	}
 
-	public void setState(String state) {
+	public Address setState(String state) {
 		this.state = state;
+		return this;
 	}
 
 	public String getZipCode() {
 		return zipCode;
 	}
 
-	public void setZipCode(String zipCode) {
+	public Address setZipCode(String zipCode) {
 		this.zipCode = zipCode;
+		return this;
 	}
 
-	public AddressValidationResult validate()
-			throws HTTPError {
+	public Address setStreet(String... lines) {
+		if (lines.length > 3) {
+			throw new RuntimeException("Street property has maximum 3 lines");
+		}
+		this.setStreetLines(lines);
+		return this;
+	}
+
+	public Address setStreet(String line1, String line2, String line3) {
+		this.line1 = line1;
+		this.line2 = line2;
+		this.line3 = line3;
+		return this;
+	}
+
+	public Address setStreet(List<String> lines) {
+		String[] array = lines.toArray(new String[lines.size()]);
+		this.setStreetLines(array);
+		return this;
+	}
+
+	private void setStreetLines(String[] lines) {
+		if (lines.length >= 1) {
+			this.line1 = lines[0];
+		}
+		if (lines.length >= 2) {
+			this.line2 = lines[1];
+		}
+		if (lines.length >= 3) {
+			this.line3 = lines[2];
+		}
+	}
+
+	public AddressValidationResult validate() throws HTTPError {
 		PostMasterClient client = PostMasterClient.getInstance();
-		JSONObject result = client.post(PATH_VALIDATE, this,null);
+		JSONObject result = client.post(PATH_VALIDATE, this, null);
 		return new AddressValidationResult(result);
 
 	}

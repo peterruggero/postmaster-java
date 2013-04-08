@@ -15,24 +15,31 @@ public class Rate {
 		return this.charge;
 	}
 
-	public void setCharge(String charge) {
+	public Rate setCharge(String charge) {
 		this.charge = charge;
+		return this;
 	}
 
 	public String getCurrency() {
 		return this.currency;
 	}
 
-	public void setCurrency(String currency) {
+	public Rate setCurrency(String currency) {
 		this.currency = currency;
+		return this;
 	}
 
 	public String getService() {
 		return this.service;
 	}
 
-	public void setService(String service) {
+	public Rate setService(String service) {
 		this.service = service;
+		return this;
+	}
+
+	public static Rate create() {
+		return new Rate();
 	}
 
 }

@@ -1,6 +1,9 @@
 package io.postmaster;
 
 import static org.junit.Assert.assertNotNull;
+import io.postmaster.core.PostMasterClient;
+import io.postmaster.entity.Address;
+import io.postmaster.entity.Package;
 import io.postmaster.entity.Shipment;
 import io.postmaster.entity.result.ShipmentCreationResult;
 import io.postmaster.entity.result.ShipmentFetchResult;
@@ -23,10 +26,27 @@ public class ShipmentTest extends PostMasterTest {
 
 	@Test
 	public void testCreateShipment() throws HTTPError {
-		Gson gson = new Gson();
-		createdShipment = gson.fromJson(ShipmentJson, Shipment.class);
-		createdShipment.setService("ground");
-		ShipmentCreationResult result = createdShipment.create();
+		Shipment sh = PostMasterClient.createShipment().
+				  setTo(
+				    Address.create().
+				      setCompany("ASLS").
+				      setContact("Joe Smith").
+				      setStreet("1110 Someplace Ave.").
+				      setCity("Austin").
+				      setPhoneNumber("123-123-123").
+				      setState("TX").
+				      setZipCode("78704")).
+				  setCarrier(PostMasterClient.UPS).
+				  setService(PostMasterClient.Service2Day).
+				  setPackageInfo(
+				    Package.create().
+				      setDimensions(10, 6, 8).
+				      setWeight(1.5).
+				      setValue(55)).
+				  setReference("Order # 54321");
+				
+				sh.createShipment();
+		ShipmentCreationResult result = sh.createShipment();
 		// TODO there are errors while creating shipment on server. Sample CURL
 		// receives same error as this lib
 		result.getErrorCode();
@@ -39,7 +59,7 @@ public class ShipmentTest extends PostMasterTest {
 
 	@Test
 	public void testFetchShipments() throws HTTPError {
-		ShipmentFetchResult result = Shipment.fetch(null, null);
+		ShipmentFetchResult result = PostMasterClient.fetch(null, null);
 		assertNotNull(result.getResults());
 		receivedShipments = result.getResults();
 	}
