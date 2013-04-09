@@ -1,10 +1,16 @@
 package io.postmaster;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 import io.postmaster.core.PostMasterClient;
 import io.postmaster.entity.Address;
+import io.postmaster.entity.DeliveryTimeQueryMessage;
 import io.postmaster.entity.Package;
+import io.postmaster.entity.RateQueryMessage;
 import io.postmaster.entity.Shipment;
+import io.postmaster.entity.result.DeliveryTimeResult;
+import io.postmaster.entity.result.RateResult;
 import io.postmaster.entity.result.ShipmentCreationResult;
 import io.postmaster.entity.result.ShipmentFetchResult;
 import io.postmaster.entity.result.ShipmentTrackByReferenceResult;
@@ -15,45 +21,35 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.google.gson.Gson;
-
 public class ShipmentTest extends PostMasterTest {
 
-	private static String ShipmentJson = "{ \"package\": {\"weight\": 1.5, \"height\": 8, \"width\": 6, \"length\": 10},  \"to\": {\"city\": \"Austin\", \"country\": \"US\", \"company\": \"ASLS\", \"phone_no\": \"9197207941\", \"line1\": \"1110 Algarita Ave.\", \"state\": \"TX\", \"contact\": \"Joe Smith\",  \"zip_code\": \"78704\"}, \"carrier\": \"fedex\"}";
-
 	private static List<Shipment> receivedShipments;
-	private static Shipment createdShipment;
+	private static Shipment oldestShipment;
 
 	@Test
 	public void testCreateShipment() throws HTTPError {
-		Shipment sh = PostMasterClient.createShipment().
-				  setTo(
-				    Address.create().
-				      setCompany("ASLS").
-				      setContact("Joe Smith").
-				      setStreet("1110 Someplace Ave.").
-				      setCity("Austin").
-				      setPhoneNumber("123-123-123").
-				      setState("TX").
-				      setZipCode("78704")).
-				  setCarrier(PostMasterClient.UPS).
-				  setService(PostMasterClient.Service2Day).
-				  setPackageInfo(
-				    Package.create().
-				      setDimensions(10, 6, 8).
-				      setWeight(1.5).
-				      setValue(55)).
-				  setReference("Order # 54321");
-				
-				sh.createShipment();
+		Shipment sh = PostMasterClient
+				.createShipment()
+				.setTo(Address.create().setCompany("ASLS")
+						.setContact("Joe Smith")
+						.setStreet("1110 Someplace Ave.").setCity("Austin")
+						.setPhoneNumber("1231231239").setState("TX")
+						.setZipCode("78704"))
+				.setCarrier(PostMasterClient.UPS)
+				.setService(PostMasterClient.Service2Day)
+				.setPackageInfo(
+						Package.create().setDimensions(10, 6, 8).setWeight(1.5)
+								.setValue(55)).setReference("Order # 54321");
+
+		sh.createShipment();
 		ShipmentCreationResult result = sh.createShipment();
-		// TODO there are errors while creating shipment on server. Sample CURL
-		// receives same error as this lib
-		result.getErrorCode();
+		assertNotNull(result);
+		assertNotNull(result.getCreatedShipment());
+		assertNull(result.getErrorCode());
 	}
 
 	@Test
-	public void testVoidShipment() {
+	public void testVoidShipment() throws HTTPError {
 		// TODO void doesn't work properly on API side yet
 	}
 
@@ -62,13 +58,16 @@ public class ShipmentTest extends PostMasterTest {
 		ShipmentFetchResult result = PostMasterClient.fetch(null, null);
 		assertNotNull(result.getResults());
 		receivedShipments = result.getResults();
+		oldestShipment = receivedShipments.get(receivedShipments.size() - 1);
 	}
 
 	@Test
 	public void testTrackShipment() throws HTTPError {
-
-		ShipmentTrackResult result = Shipment.track(receivedShipments.get(0)
-				.getId().intValue());
+		// this id is used because for KEY used in code (and database) it has
+		// any tracking details
+		// server should have return any convenient message if no tracking info
+		// found instead of 500
+		ShipmentTrackResult result = Shipment.track(1002);
 		assertNotNull(result.getTrackingDetails());
 
 	}
@@ -76,8 +75,43 @@ public class ShipmentTest extends PostMasterTest {
 	@Test
 	public void testTrackByReferenceNumber() throws HTTPError {
 		ShipmentTrackByReferenceResult result = Shipment
-				.trackByReferenceNumber(receivedShipments.get(0).getTracking());
-		assertNotNull(result.getTrackingHistoryList());
+				.trackByReferenceNumber(oldestShipment.getTracking());
+
+		assertNotNull(result);
+		if (result.getErrorCode() != null) {
+			if (!(result.getErrorCode().intValue() == 400 && result
+					.getErrorMessage().contains("No tracking information"))) {
+				fail();
+			}
+		} else {
+			assertNotNull(result.getTrackingHistoryList());
+		}
+	}
+
+	@Test
+	public void testDeliveryTime() throws HTTPError {
+		DeliveryTimeQueryMessage queryTime = DeliveryTimeQueryMessage.create()
+				.setCarrier("ups").setFromZip("28771").setToZip("78704")
+				.setWeight(1.0);
+
+		DeliveryTimeResult result = Shipment.time(queryTime);
+
+		assertNotNull(result);
+		assertNotNull(result.getServices());
+		assertNull(result.getErrorCode());
+	}
+
+	@Test
+	public void testRates() throws HTTPError {
+		RateQueryMessage rateQuery = RateQueryMessage.create()
+				.setCarrier("fedex").setFromZip("28771").setToZip("78704")
+				.setWeight(1.0);
+
+		RateResult result = Shipment.rates(rateQuery);
+
+		assertNotNull(result);
+		assertNotNull(result.getRate());
+		assertNull(result.getErrorCode());
 	}
 
 }
