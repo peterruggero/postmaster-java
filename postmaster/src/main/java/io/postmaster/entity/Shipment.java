@@ -8,10 +8,8 @@ import io.postmaster.entity.result.ShipmentTrackByReferenceResult;
 import io.postmaster.entity.result.ShipmentTrackResult;
 import io.postmaster.errors.HTTPError;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.google.gson.Gson;
@@ -157,7 +155,7 @@ public class Shipment {
 		this.tracking = tracking;
 		return this;
 	}
-	
+
 	public String getReference() {
 		return reference;
 	}
@@ -210,16 +208,13 @@ public class Shipment {
 	}
 
 	public static DeliveryTimeResult time(DeliveryTimeQueryMessage time)
-			throws UnsupportedEncodingException, HTTPError, JSONException {
+			throws HTTPError {
 		PostMasterClient client = PostMasterClient.getInstance();
-		// TODO server doesn't recognize from_zip parameter in sent json
-
 		JSONObject response = client.post(TIMES_PATH, time, null);
 		return new DeliveryTimeResult(response);
 	}
 
-	public static RateResult rates(RateQueryMessage rate)
-			throws UnsupportedEncodingException, HTTPError, JSONException {
+	public static RateResult rates(RateQueryMessage rate) throws HTTPError {
 		PostMasterClient client = PostMasterClient.getInstance();
 
 		JSONObject response = client.post(RATES_PATH, rate, null);

@@ -58,14 +58,15 @@ public class PostMasterClient extends DefaultPostMasterHTTPClient {
 		Gson gson = new Gson();
 		return gson.fromJson(response.toString(), Shipment.class);
 	}
-	
-	// Shoudn't we create enums with String values which is appropriate for Java standards?
-	
+
+	// Shoudn't we create enums with String values which is appropriate for Java
+	// standards?
+
 	// Carrier definitions
 	public static final String UPS = "ups";
 	public static final String USPS = "usps";
 	public static final String Fedex = "fedex";
-	
+
 	// Service definitions
 	public static final String Service2Day = "2DAY";
 	public static final String Service3Day = "3DAY";
@@ -74,5 +75,5 @@ public class PostMasterClient extends DefaultPostMasterHTTPClient {
 	public static final String Service1Day = "1DAY";
 	public static final String Service1DayEarly = "1DAY_EARLY";
 	public static final String Service1DayMorning = "1DAY_MORNING";
-	
+
 }
