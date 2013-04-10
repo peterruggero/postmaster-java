@@ -1,48 +1,61 @@
 package io.postmaster.entity;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class DeliveryTimeQueryMessage {
 
+	@Expose
 	@SerializedName("from_zip")
-	private Number fromZip;
+	private String fromZip;
+	@Expose
 	@SerializedName("to_zip")
-	private Number toZip;
+	private String toZip;
+	@Expose
 	@SerializedName("weight")
 	private Number weight;
+	@Expose
 	@SerializedName("carrier")
 	private String carrier;
 
-	public Number getFromZip() {
+	public static DeliveryTimeQueryMessage create(){
+		return new DeliveryTimeQueryMessage();
+	}
+	
+	public String getFromZip() {
 		return fromZip;
 	}
 
-	public void setFromZip(Number fromZip) {
+	public DeliveryTimeQueryMessage setFromZip(String fromZip) {
 		this.fromZip = fromZip;
+		return this;
 	}
 
-	public Number getToZip() {
+	public String getToZip() {
 		return toZip;
 	}
 
-	public void setToZip(Number toZip) {
+	public DeliveryTimeQueryMessage setToZip(String toZip) {
 		this.toZip = toZip;
+		return this;
 	}
 
 	public Number getWeight() {
 		return weight;
 	}
 
-	public void setWeight(Number weight) {
+	public DeliveryTimeQueryMessage setWeight(Number weight) {
 		this.weight = weight;
+		return this;
 	}
 
 	public String getCarrier() {
 		return carrier;
 	}
 
-	public void setCarrier(String carrier) {
+	public DeliveryTimeQueryMessage setCarrier(String carrier) {
 		this.carrier = carrier;
+		return this;
 	}
 
 }

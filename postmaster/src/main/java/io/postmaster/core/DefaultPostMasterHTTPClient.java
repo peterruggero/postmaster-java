@@ -62,10 +62,10 @@ import com.google.gson.Gson;
 @SuppressWarnings("deprecation")
 public class DefaultPostMasterHTTPClient {
 
-	static final String API_DOMAIN = "https://staging.api.postmaster.io";
-	
 	private static final int CONNECTION_TIMEOUT = 10000;
 	private static final int SOCKET_TIMEOUT = 20000;
+	private static final String CONTENT_TYPE_ACCEPT = "application/json";
+	private static final String CONTENT_TYPE_SEND = "application/json";
 
 	private String userAgent;
 	protected int connectionTimeout;
@@ -136,8 +136,11 @@ public class DefaultPostMasterHTTPClient {
 			serializedJson = serialize(entity);
 		}
 
-		request.setEntity(new StringEntity(serializedJson,
-				ContentType.APPLICATION_JSON));
+		try {
+			request.setEntity(new StringEntity(serializedJson));
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
+		}
 		return prepareRequestAndExtractResponse(request);
 	}
 
@@ -149,8 +152,11 @@ public class DefaultPostMasterHTTPClient {
 		if (serializedJson == null) {
 			serializedJson = serialize(entity);
 		}
-		request.setEntity(new StringEntity(serializedJson,
-				ContentType.APPLICATION_JSON));
+		try {
+			request.setEntity(new StringEntity(serializedJson));
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
+		}
 		return prepareRequestAndExtractResponse(request);
 	}
 
@@ -168,7 +174,7 @@ public class DefaultPostMasterHTTPClient {
 
 	private URI buildUri(String path, Map<String, String> params) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(API_DOMAIN);
+		sb.append(Settings.API_DOMAIN);
 		sb.append(path);
 		if (params != null && params.size() > 0) {
 			sb.append("?");
@@ -187,7 +193,8 @@ public class DefaultPostMasterHTTPClient {
 
 	private void addHeaders(HttpUriRequest request) {
 		request.addHeader(new BasicHeader("User-Agent", userAgent));
-		request.addHeader(new BasicHeader("Accept", "application/json"));
+		request.addHeader(new BasicHeader("Accept", CONTENT_TYPE_ACCEPT));
+		request.addHeader(new BasicHeader("Content-Type", CONTENT_TYPE_SEND));
 	}
 
 	private JSONObject prepareRequestAndExtractResponse(HttpUriRequest request)
@@ -195,12 +202,12 @@ public class DefaultPostMasterHTTPClient {
 		if (key != null) {
 			String encoding = "";
 			try {
-				encoding = Base64.encodeBase64URLSafeString((key + ":")
+				encoding = Base64.encodeBase64String((key + ":")
 						.getBytes("UTF-8"));
 			} catch (UnsupportedEncodingException e) {
 				throw new RuntimeException(e);
 			}
-			request.setHeader("Authorization", "Basic " + encoding);
+			request.setHeader("Authorization", "Basic " + encoding + "=");
 		}
 
 		HttpResponse response;

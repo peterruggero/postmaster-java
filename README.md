@@ -33,7 +33,7 @@ Add this dependency to your `pom.xml`:
     </dependency>
 	
 
-Or export to a jar file and include it in your project.
+Or export to a jar file and include it in your project (with required dependencies).
 	
 ### Source
 
@@ -43,7 +43,11 @@ Download the postmaster-java source:
 
 ## Quickstart
 
-    TODO - sample project
+    Sample project is available (PostmasterClient). This is example of how to configure library and its dependencies, how to use it in code for simple Swing application. 
+
+    To run this application with Maven, use:
+
+	$ mvn exec:java -Dexec.mainClass="io.postmaster.client.postmasterclient.SimplePostmasterClient"
  
 ## Usage
 

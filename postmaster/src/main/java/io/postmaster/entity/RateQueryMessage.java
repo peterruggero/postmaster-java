@@ -1,78 +1,97 @@
 package io.postmaster.entity;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class RateQueryMessage {
 
-	@SerializedName("from_zip")
-	private Number fromZip;
-	@SerializedName("to_zip")
-	private Number toZip;
-	@SerializedName("weight")
-	private Number weight;
+	@Expose
 	@SerializedName("carrier")
 	private String carrier;
-	@SerializedName("commercial")
-	private boolean commercial;
+	@Expose
+	@SerializedName("from_zip")
+	private String fromZip;
+	@Expose
+	@SerializedName("weight")
+	private Number weight;
+	@Expose
 	@SerializedName("service")
 	private String service;
+	@Expose
+	@SerializedName("to_zip")
+	private String toZip;
+	@Expose
+	@SerializedName("commercial")
+	private boolean commercial;
+	@Expose
 	@SerializedName("packaging")
 	private String packaging;
 
-	public Number getFromZip() {
+	public static RateQueryMessage create(){
+		return new RateQueryMessage();
+	}
+	
+	public String getFromZip() {
 		return fromZip;
 	}
 
-	public void setFromZip(Number fromZip) {
+	public RateQueryMessage setFromZip(String fromZip) {
 		this.fromZip = fromZip;
+		return this;
 	}
 
-	public Number getToZip() {
+	public String getToZip() {
 		return toZip;
 	}
 
-	public void setToZip(Number toZip) {
+	public RateQueryMessage setToZip(String toZip) {
 		this.toZip = toZip;
+		return this;
 	}
 
 	public Number getWeight() {
 		return weight;
 	}
 
-	public void setWeight(Number weight) {
+	public RateQueryMessage setWeight(Number weight) {
 		this.weight = weight;
+		return this;
 	}
 
 	public String getCarrier() {
 		return carrier;
 	}
 
-	public void setCarrier(String carrier) {
+	public RateQueryMessage setCarrier(String carrier) {
 		this.carrier = carrier;
+		return this;
 	}
 
 	public boolean isCommercial() {
 		return commercial;
 	}
 
-	public void setCommercial(boolean commercial) {
+	public RateQueryMessage setCommercial(boolean commercial) {
 		this.commercial = commercial;
+		return this;
 	}
 
 	public String getService() {
 		return service;
 	}
 
-	public void setService(String service) {
+	public RateQueryMessage setService(String service) {
 		this.service = service;
+		return this;
 	}
 
 	public String getPackaging() {
 		return packaging;
 	}
 
-	public void setPackaging(String packaging) {
+	public RateQueryMessage setPackaging(String packaging) {
 		this.packaging = packaging;
+		return this;
 	}
 
 }
