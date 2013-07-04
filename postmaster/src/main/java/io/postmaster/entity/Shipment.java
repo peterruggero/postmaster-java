@@ -32,6 +32,8 @@ public class Shipment {
 	private String carrier;
 	@SerializedName("created_at")
 	private Number createdAt;
+	@SerializedName("cost")
+	private Number cost;
 	@Expose
 	@SerializedName("from")
 	private Address from;
@@ -50,7 +52,7 @@ public class Shipment {
 	@SerializedName("to")
 	private Address to;
 	@SerializedName("tracking")
-	private String tracking;
+	private List<String> tracking;
 	@Expose
 	@SerializedName("service")
 	private String service;
@@ -147,11 +149,11 @@ public class Shipment {
 		return this;
 	}
 
-	public String getTracking() {
+	public List<String> getTracking() {
 		return tracking;
 	}
 
-	public Shipment setTracking(String tracking) {
+	public Shipment setTracking(List<String> tracking) {
 		this.tracking = tracking;
 		return this;
 	}
@@ -164,8 +166,16 @@ public class Shipment {
 		this.reference = reference;
 		return this;
 	}
+	
+	public Number getCost() {
+        return cost;
+    }
 
-	public ShipmentCreationResult createShipment() throws HTTPError {
+    public void setCost(Number cost) {
+        this.cost = cost;
+    }
+
+    public ShipmentCreationResult createShipment() throws HTTPError {
 
 		PostMasterClient client = PostMasterClient.getInstance();
 		GsonBuilder builder = new GsonBuilder();
