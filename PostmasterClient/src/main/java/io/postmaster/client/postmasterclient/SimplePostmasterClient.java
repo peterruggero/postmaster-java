@@ -266,13 +266,19 @@ public class SimplePostmasterClient extends javax.swing.JFrame {
             public void done() {
                 fetchShipmentsButton.setEnabled(true);
                 StringBuilder sb = new StringBuilder();
-                sb.append("error code:").append(result.getErrorCode()).append("\n");
-                sb.append("error message:").append(result.getErrorCode()).append("\n");
-                if (result.getResults() != null) {
-                    Gson gson = new Gson();
-                    sb.append("Entity:\n").append(gson.toJson(result.getResults()));
-
+                if(result == null){
+                    sb.append("Nothing was returned from API");
                 }
+                else{
+                    sb.append("error code:").append(result.getErrorCode()).append("\n");
+                    sb.append("error message:").append(result.getErrorCode()).append("\n");
+                    if (result.getResults() != null) {
+                        Gson gson = new Gson();
+                        sb.append("Entity:\n").append(gson.toJson(result.getResults()));
+
+                    }
+                }
+                
                 appendConsoleNewBlock(sb.toString());
             }
         };
