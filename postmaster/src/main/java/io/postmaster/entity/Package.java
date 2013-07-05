@@ -28,8 +28,20 @@ public class Package {
 	@Expose
 	@SerializedName("value")
 	private String value;
+	@Expose
+	@SerializedName("customs")
+	private Customs customs;
 
-	public static Package create() {
+	public Customs getCustoms() {
+        return customs;
+    }
+
+    public Package setCustoms(Customs customs) {
+        this.customs = customs;
+        return this;
+    }
+
+    public static Package create() {
 		return new Package();
 	}
 
