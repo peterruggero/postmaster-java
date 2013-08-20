@@ -333,7 +333,7 @@ public class SimplePostmasterClient extends javax.swing.JFrame {
                 @Override
                 public ImageIcon[] doInBackground() {
                     try {
-                        result = PostMasterClient.retreive((long) id);
+                        result = PostMasterClient.fetchById((long) id);
                     } catch (HTTPError ex) {
                         consoleTextArea.append(ex.getMessage());
                     }

@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class Package {
 
-	@SerializedName("dimention_units")
+	@SerializedName("dimension_units")
 	private String dimensionUnits;
 	@Expose
 	@SerializedName("height")
@@ -155,5 +155,5 @@ public class Package {
 			this.length = dimensions[2];
 		}
 	}
-
+	
 }
