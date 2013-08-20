@@ -1,7 +1,7 @@
 package io.postmaster.core;
 
 import io.postmaster.entity.Shipment;
-import io.postmaster.entity.result.ShipmentFetchResult;
+import io.postmaster.entity.result.FetchShipmentResult;
 import io.postmaster.errors.HTTPError;
 
 import java.util.HashMap;
@@ -36,7 +36,7 @@ public class PostMasterClient extends DefaultPostMasterHTTPClient {
 		PostMasterClient.getInstance().key = apiKey;
 	}
 
-	public static ShipmentFetchResult fetch(String cursor, Integer limit)
+	public static FetchShipmentResult fetch(String cursor, Integer limit)
 			throws HTTPError {
 		Map<String, String> params = new HashMap<String, String>();
 		if (cursor != null) {
@@ -48,10 +48,10 @@ public class PostMasterClient extends DefaultPostMasterHTTPClient {
 
 		JSONObject response = PostMasterClient.getInstance().get(
 				Shipment.FETCH_PATH, params);
-		return new ShipmentFetchResult(response);
+		return new FetchShipmentResult(response);
 	}
 
-	public static Shipment retreive(Long shipmentId) throws HTTPError {
+	public static Shipment fetchById(Long shipmentId) throws HTTPError {
 
 		JSONObject response = PostMasterClient.getInstance().get(
 				String.format(Shipment.RETREIVE_PATH, shipmentId), null);

@@ -63,7 +63,7 @@ import com.google.gson.Gson;
 public class DefaultPostMasterHTTPClient {
 
 	private static final int CONNECTION_TIMEOUT = 10000;
-	private static final int SOCKET_TIMEOUT = 20000;
+	private static final int SOCKET_TIMEOUT = 60000;
 	private static final String CONTENT_TYPE_ACCEPT = "application/json";
 	private static final String CONTENT_TYPE_SEND = "application/json";
 
