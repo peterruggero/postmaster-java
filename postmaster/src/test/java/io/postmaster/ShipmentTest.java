@@ -13,9 +13,9 @@ import io.postmaster.entity.Package;
 import io.postmaster.entity.RateQueryMessage;
 import io.postmaster.entity.Shipment;
 import io.postmaster.entity.result.DeliveryTimeResult;
+import io.postmaster.entity.result.FetchShipmentResult;
 import io.postmaster.entity.result.RateResult;
 import io.postmaster.entity.result.ShipmentCreationResult;
-import io.postmaster.entity.result.ShipmentFetchResult;
 import io.postmaster.entity.result.ShipmentTrackByReferenceResult;
 import io.postmaster.entity.result.ShipmentTrackResult;
 import io.postmaster.errors.HTTPError;
@@ -34,8 +34,8 @@ public class ShipmentTest extends PostMasterTest {
         Shipment sh = PostMasterClient
                 .createShipment()
                 .setTo(Address.create().setCompany("ASLS")
-                        .setContact("Joe Smith")
-                        .setStreet("1110 Someplace Ave.").setCity("Austin")
+                        .setContact("John Katchinsky")
+                        .setStreet("1212 Someplace Else Ave.").setCity("Austin")
                         .setPhoneNumber("1231231239").setState("TX")
                         .setZipCode("78704"))
                 .setCarrier(PostMasterClient.UPS)
@@ -81,7 +81,7 @@ public class ShipmentTest extends PostMasterTest {
 
     @Test
     public void testFetchShipments() throws HTTPError {
-        ShipmentFetchResult result = PostMasterClient.fetch(null, null);
+        FetchShipmentResult result = PostMasterClient.fetch(null, null);
         assertNotNull(result.getResults());
         receivedShipments = result.getResults();
         oldestShipment = receivedShipments.get(receivedShipments.size() - 1);
