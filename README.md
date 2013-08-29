@@ -21,19 +21,8 @@ Please use appropriately tagged github [issues](https://github.com/postmaster/po
 
 ## Installation
 
+There is a simple Eclipse project included which is configured to work with all dependencies as jars. All jars needed are available in /libs directory along with built Postmaster library jar.
 
-### Maven
-
-Add this dependency to your `pom.xml`:
-
-    <dependency>
-	    <groupId>io.postmaster</groupId>
-	    <artifactId>postmaster</artifactId>
-	    <version>0.1</version>
-    </dependency>
-	
-
-Or export to a jar file and include it in your project (with required dependencies).
 	
 ### Source
 
@@ -43,33 +32,8 @@ Download the postmaster-java source:
 
 ## Quickstart
 
-    Sample project is available (PostmasterClient). This is example of how to configure library and its dependencies, how to use it in code for simple Swing application. 
-
-    To run this application with Maven, use:
-
-	$ mvn exec:java -Dexec.mainClass="io.postmaster.client.postmasterclient.SimplePostmasterClient"
+    Sample project is available (PostmasterClientNonMaven). This is example of how to configure library and its dependencies, how to use it in code for simple Swing application. 
  
 ## Usage
 
 See https://www.postmaster.io/docs for tutorials and documentation.
-
-
-## Testing
-    
-    You can test particular jUnit test from your IDE or performing Maven test:
-	
-	$ mvn test
-	
-## Publishing
-
-[Sonatype OSS repository](https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide).
-
-### Snapshot
-
-    $ mvn clean deploy
-
-### Stage Release
-
-    $ mvn release:clean
-    $ mvn release:prepare
-    $ mvn release:perform
