@@ -27,7 +27,7 @@ public class ShipmentTrackByReferenceResult extends OperationResult {
 						new TypeToken<List<TrackingDetailsHistory>>() {
 						}.getType());
 			} else {
-				this.wrapJSONErrorData(input);
+				this.wrapJSONResponseData(input);
 			}
 		} catch (JsonSyntaxException e) {
 			throw new RuntimeException(e);

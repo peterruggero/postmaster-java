@@ -22,7 +22,7 @@ public class PackageFitResult extends OperationResult{
                 fitInfo = gson.fromJson(input.toString(),
                         PackageFitInfo.class);
             } else {
-                this.wrapJSONErrorData(input);
+                this.wrapJSONResponseData(input);
             }
 
         } catch (JSONException e) {

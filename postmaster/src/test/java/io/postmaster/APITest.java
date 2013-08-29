@@ -24,7 +24,7 @@ public class APITest extends PostMasterTest {
 		Gson gson = new Gson();
 		Address address = gson.fromJson(AddressJson, Address.class);
 		AddressValidationResult result = address.validate();
-		assertEquals(result.getErrorCode().intValue(), 401);
+		assertEquals(result.getCode().intValue(), 401);
 	}
 
 }

@@ -22,7 +22,7 @@ public class ShipmentCreationResult extends OperationResult {
 				createdShipment = gson.fromJson(input.toString(),
 						Shipment.class);
 			} else {
-				this.wrapJSONErrorData(input);
+				this.wrapJSONResponseData(input);
 			}
 
 		} catch (JSONException e) {

@@ -44,7 +44,7 @@ public class FetchBoxResult extends OperationResult{
                     cursor = input.getString("cursor");
                 }
             } else {
-                this.wrapJSONErrorData(input);
+                this.wrapJSONResponseData(input);
             }
         } catch (JsonSyntaxException e) {
             throw new RuntimeException(e);
