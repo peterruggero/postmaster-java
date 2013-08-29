@@ -18,8 +18,8 @@ public class RateResult extends OperationResult {
 
 	public RateResult(JSONObject input) {
 		try {
-			this.wrapJSONErrorData(input);
-			if (this.getErrorCode() == null) {
+			this.wrapJSONResponseData(input);
+			if (this.getCode() == null) {
 				Gson gson = new Gson();
 				rate = gson.fromJson(input.toString(), Rate.class);
 			}

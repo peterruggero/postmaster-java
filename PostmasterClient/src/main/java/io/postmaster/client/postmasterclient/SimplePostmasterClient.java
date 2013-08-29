@@ -1,17 +1,20 @@
 package io.postmaster.client.postmasterclient;
 
-import com.google.gson.Gson;
 import io.postmaster.core.PostMasterClient;
 import io.postmaster.entity.Address;
 import io.postmaster.entity.Address.AddressValidationResult;
 import io.postmaster.entity.Shipment;
-import io.postmaster.entity.result.ShipmentFetchResult;
+import io.postmaster.entity.result.FetchShipmentResult;
 import io.postmaster.entity.result.ShipmentTrackResult;
 import io.postmaster.errors.HTTPError;
+
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
+
+import com.google.gson.Gson;
+
 
 public class SimplePostmasterClient extends javax.swing.JFrame {
 
@@ -19,7 +22,7 @@ public class SimplePostmasterClient extends javax.swing.JFrame {
         initComponents();
 
         //initialize once postmaster library by setting your API key
-        PostMasterClient.setApiKey("tt_MTEwMDE6MVZCS2t2bWtBZG1NbkpYeUctdWFETlRFby1r");
+        PostMasterClient.setApiKey("tt_ODAwMTpSa09JNHktVzJUaFVwZFFCeFBfbTlyUm1UNWs");
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -250,7 +253,7 @@ public class SimplePostmasterClient extends javax.swing.JFrame {
 
     private void fetchShipmentsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fetchShipmentsButtonActionPerformed
         SwingWorker worker = new SwingWorker<ImageIcon[], Void>() {
-            private ShipmentFetchResult result = null;
+            private FetchShipmentResult result = null;
 
             @Override
             public ImageIcon[] doInBackground() {
@@ -270,8 +273,8 @@ public class SimplePostmasterClient extends javax.swing.JFrame {
                     sb.append("Nothing was returned from API");
                 }
                 else{
-                    sb.append("error code:").append(result.getErrorCode()).append("\n");
-                    sb.append("error message:").append(result.getErrorCode()).append("\n");
+                    sb.append("error code:").append(result.getCode()).append("\n");
+                    sb.append("error message:").append(result.getCode()).append("\n");
                     if (result.getResults() != null) {
                         Gson gson = new Gson();
                         sb.append("Entity:\n").append(gson.toJson(result.getResults()));
@@ -308,8 +311,8 @@ public class SimplePostmasterClient extends javax.swing.JFrame {
                 public void done() {
                     trackButton.setEnabled(true);
                     StringBuilder sb = new StringBuilder();
-                    sb.append("error code:").append(result.getErrorCode()).append("\n");
-                    sb.append("error message:").append(result.getErrorCode()).append("\n");
+                    sb.append("error code:").append(result.getCode()).append("\n");
+                    sb.append("error message:").append(result.getCode()).append("\n");
                     if (result.getTrackingDetails() != null) {
                         Gson gson = new Gson();
                         sb.append("Entity:\n").append(gson.toJson(result.getTrackingDetails()));

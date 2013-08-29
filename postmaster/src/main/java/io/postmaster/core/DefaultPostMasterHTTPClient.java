@@ -114,16 +114,16 @@ public class DefaultPostMasterHTTPClient {
 		return get(path, new HashMap<String, String>());
 	}
 
-	public void delete(String path, Map<String, String> params)
+	public JSONObject delete(String path, Map<String, String> params)
 			throws HTTPError {
 		URI uri = buildUri(path, params);
 		HttpDelete request = new HttpDelete(uri);
 		addHeaders(request);
-		prepareRequestAndExtractResponse(request);
+		return prepareRequestAndExtractResponse(request);
 	}
 
-	public void delete(String path) throws HTTPError {
-		delete(path, new HashMap<String, String>());
+	public JSONObject delete(String path) throws HTTPError {
+		return delete(path, new HashMap<String, String>());
 	}
 
 	public JSONObject put(String path, Object entity, String serializedJson)

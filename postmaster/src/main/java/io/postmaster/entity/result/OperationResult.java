@@ -5,24 +5,24 @@ import org.json.JSONObject;
 
 public class OperationResult {
 
-	private String errorMessage;
-	private Integer errorCode;
+	private String message;
+	private Integer code;
 
-	protected void wrapJSONErrorData(JSONObject data) throws JSONException {
+	public void wrapJSONResponseData(JSONObject data) throws JSONException {
 		if (data.has("message")) {
-			this.errorMessage = data.getString("message");
+			this.message = data.getString("message");
 		}
 		if (data.has("code")) {
-			this.errorCode = (Integer) data.get("code");
+			this.code = (Integer) data.get("code");
 		}
 	}
 
-	public String getErrorMessage() {
-		return errorMessage;
+	public String getMessage() {
+		return message;
 	}
 
-	public Integer getErrorCode() {
-		return errorCode;
+	public Integer getCode() {
+		return code;
 	}
 
 }
