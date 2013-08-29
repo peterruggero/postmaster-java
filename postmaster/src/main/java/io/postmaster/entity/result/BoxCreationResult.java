@@ -16,7 +16,7 @@ public class BoxCreationResult  extends OperationResult {
             if (input.has("id")) {
                 createdPackageId = Long.parseLong(input.getString("id"));
             } else {
-                this.wrapJSONErrorData(input);
+                this.wrapJSONResponseData(input);
             }
 
         } catch (JSONException e) {

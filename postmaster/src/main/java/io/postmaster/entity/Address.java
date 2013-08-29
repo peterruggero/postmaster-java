@@ -205,7 +205,7 @@ public class Address {
 							new TypeToken<List<Address>>() {
 							}.getType());
 				} else {
-					this.wrapJSONErrorData(input);
+					this.wrapJSONResponseData(input);
 				}
 
 			} catch (JSONException e) {

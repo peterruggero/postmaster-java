@@ -27,7 +27,7 @@ public class DeliveryTimeResult extends OperationResult {
 						new TypeToken<List<Service>>() {
 						}.getType());
 			} else {
-				this.wrapJSONErrorData(input);
+				this.wrapJSONResponseData(input);
 			}
 		} catch (JsonSyntaxException e) {
 			throw new RuntimeException(e);

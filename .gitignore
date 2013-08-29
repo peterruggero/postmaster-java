@@ -1,6 +1,14 @@
 *.class
 .DS_Store
-.classpath
-.project
+#.classpath
+/postmaster/.classpath
+/PostmasterClient/.classpath
+#.project
+/postmaster/.project
+/PostmasterClient/.project
 .settings
-
+/bin
+/target
+/PostmasterClient/bin
+/PostmasterClientNonMaven/bin
+/postmaster/target

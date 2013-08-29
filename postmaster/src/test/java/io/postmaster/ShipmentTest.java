@@ -3,17 +3,22 @@ package io.postmaster;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import io.postmaster.core.PostMasterClient;
 import io.postmaster.entity.Address;
 import io.postmaster.entity.Customs;
 import io.postmaster.entity.CustomsContent;
 import io.postmaster.entity.DeliveryTimeQueryMessage;
+import io.postmaster.entity.MonitorPackageQueryMessage;
 import io.postmaster.entity.Package;
 import io.postmaster.entity.RateQueryMessage;
 import io.postmaster.entity.Shipment;
+import io.postmaster.entity.MonitorPackageQueryMessage.PackageEvent;
 import io.postmaster.entity.result.DeliveryTimeResult;
 import io.postmaster.entity.result.FetchShipmentResult;
+import io.postmaster.entity.result.MonitorPackageResult;
+import io.postmaster.entity.result.OperationResult;
 import io.postmaster.entity.result.RateResult;
 import io.postmaster.entity.result.ShipmentCreationResult;
 import io.postmaster.entity.result.ShipmentTrackByReferenceResult;
@@ -71,12 +76,14 @@ public class ShipmentTest extends PostMasterTest {
         ShipmentCreationResult result = sh.createShipment();
         assertNotNull(result);
         assertNotNull(result.getCreatedShipment());
-        assertNull(result.getErrorCode());
+        assertNull(result.getCode());
     }
 
     @Test
     public void testVoidShipment() throws HTTPError {
-        // TODO void doesn't work properly on API side yet
+        OperationResult result = Shipment.voidShipment(6080711618461696L);
+        assertNotNull(result);
+        assertEquals("OK", result.getMessage());
     }
 
     @Test
@@ -93,9 +100,13 @@ public class ShipmentTest extends PostMasterTest {
         // any tracking details
         // server should have return any convenient message if no tracking info
         // found instead of 500
-        ShipmentTrackResult result = Shipment.track(1002);
-        assertNotNull(result.getTrackingDetails());
-
+        ShipmentTrackResult result = Shipment.track(6080711618461696L);
+        if(result.getCode()!=null && result.getCode().equals(400)){
+            // notracking data found, skip
+        }
+        else{
+            assertNotNull(result.getTrackingDetails());
+        }
     }
 
     @Test
@@ -104,9 +115,9 @@ public class ShipmentTest extends PostMasterTest {
                 .trackByReferenceNumber(oldestShipment.getTracking().get(0));
 
         assertNotNull(result);
-        if (result.getErrorCode() != null) {
-            if (!(result.getErrorCode().intValue() == 400 && result
-                    .getErrorMessage().contains("No tracking information"))) {
+        if (result.getCode() != null) {
+            if (!(result.getCode().intValue() == 400 && result
+                    .getMessage().contains("No tracking information"))) {
                 fail();
             }
         } else {
@@ -124,7 +135,7 @@ public class ShipmentTest extends PostMasterTest {
 
         assertNotNull(result);
         assertNotNull(result.getServices());
-        assertNull(result.getErrorCode());
+        assertNull(result.getCode());
     }
 
     @Test
@@ -137,7 +148,24 @@ public class ShipmentTest extends PostMasterTest {
 
         assertNotNull(result);
         assertNotNull(result.getRate());
-        assertNull(result.getErrorCode());
+        assertNull(result.getCode());
+    }
+    
+    @Test
+    public void testMonitorExternalPackage() throws HTTPError {
+        MonitorPackageQueryMessage query = MonitorPackageQueryMessage.create()
+                .setCallbackUrl("http://example.com/your-http-post-listener")
+                .addEvent(PackageEvent.Delivered)
+                .addEvent(PackageEvent.Exception)
+                .setTracking("1ZW470V80310800043");
+        
+
+        MonitorPackageResult result = Shipment.monitorExternalPackage(query);
+
+        assertNotNull(result);
+        assertNull(result.getCode());
+        
+        
     }
 
 }

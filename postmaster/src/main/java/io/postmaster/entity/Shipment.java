@@ -2,6 +2,8 @@ package io.postmaster.entity;
 
 import io.postmaster.core.PostMasterClient;
 import io.postmaster.entity.result.DeliveryTimeResult;
+import io.postmaster.entity.result.MonitorPackageResult;
+import io.postmaster.entity.result.OperationResult;
 import io.postmaster.entity.result.RateResult;
 import io.postmaster.entity.result.ShipmentCreationResult;
 import io.postmaster.entity.result.ShipmentTrackByReferenceResult;
@@ -10,6 +12,7 @@ import io.postmaster.errors.HTTPError;
 
 import java.util.List;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.google.gson.Gson;
@@ -22,7 +25,7 @@ public class Shipment {
 	public static final String FETCH_PATH = "/v1/shipments";
 	public static final String RETREIVE_PATH = "/v1/shipments/%d";
 	static final String TRACK_PATH = "/v1/shipments/%d/track";
-	static final String TRACK_BY_REF_PATH = "/v1/track";
+	static final String TRACK_BY_REF_OR_MONITOR_PATH = "/v1/track";
 	static final String VOID_PATH = "/v1/shipments/%d/void";
 	static final String TIMES_PATH = "/v1/times";
 	static final String RATES_PATH = "/v1/rates";
@@ -186,7 +189,7 @@ public class Shipment {
 		return new ShipmentCreationResult(response);
 	}
 
-	public static ShipmentTrackResult track(int id) throws HTTPError {
+	public static ShipmentTrackResult track(long id) throws HTTPError {
 		String path = String.format(TRACK_PATH, id);
 		PostMasterClient client = PostMasterClient.getInstance();
 		JSONObject response = client.get(path);
@@ -194,27 +197,44 @@ public class Shipment {
 	}
 
 	public ShipmentTrackResult track() throws HTTPError {
-		return track(this.id.intValue());
+		return track(this.id.longValue());
 	}
+	
+	public static MonitorPackageResult monitorExternalPackage(
+            MonitorPackageQueryMessage query) throws HTTPError {
+        String path = String.format(TRACK_BY_REF_OR_MONITOR_PATH);
+        PostMasterClient client = PostMasterClient.getInstance();
+        JSONObject response = client.post(path, query, null);
+        return new MonitorPackageResult(response);
+    }
 
 	public static ShipmentTrackByReferenceResult trackByReferenceNumber(
 			String trackingNumber) throws HTTPError {
-		String path = String.format(TRACK_BY_REF_PATH + "?tracking=%s",
+		String path = String.format(TRACK_BY_REF_OR_MONITOR_PATH + "?tracking=%s",
 				trackingNumber);
 		PostMasterClient client = PostMasterClient.getInstance();
 		JSONObject response = client.get(path);
 		return new ShipmentTrackByReferenceResult(response);
 	}
+	
+	
 
 	public void voidShipment() throws HTTPError {
-		voidShipment(this.id.intValue());
+		voidShipment(this.id.longValue());
 	}
 
-	public static void voidShipment(int shipmentId) throws HTTPError {
+	public static OperationResult voidShipment(long shipmentId) throws HTTPError {
 		String path = String.format(VOID_PATH, shipmentId);
 		PostMasterClient client = PostMasterClient.getInstance();
-		client.delete(path);
-
+		JSONObject result = client.delete(path);
+		OperationResult operationResult = null;
+		try {
+		    operationResult = new OperationResult();
+            operationResult.wrapJSONResponseData(result);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+		return operationResult;
 	}
 
 	public static DeliveryTimeResult time(DeliveryTimeQueryMessage time)
