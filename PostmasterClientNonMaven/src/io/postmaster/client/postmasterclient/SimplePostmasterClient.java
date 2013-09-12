@@ -15,13 +15,14 @@ import javax.swing.SwingWorker;
 
 import com.google.gson.Gson;
 
+
 public class SimplePostmasterClient extends javax.swing.JFrame {
 
     public SimplePostmasterClient() {
         initComponents();
 
         //initialize once postmaster library by setting your API key
-        PostMasterClient.setApiKey("tt_ODAwMTpSa09JNHktVzJUaFVwZFFCeFBfbTlyUm1UNWs");
+        PostMasterClient.setApiKey("tt_NjYyMDAxOjlVX3Z6NXo0NklVeFFlTVBVZ051V2Z1VVRCcw");
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
