@@ -49,6 +49,16 @@ Download the postmaster-java source:
 
 	$ mvn exec:java -Dexec.mainClass="io.postmaster.client.postmasterclient.SimplePostmasterClient"
  
+## Setting Up
+	
+	Please mind that there are two settings that this library is dependent upon:
+	
+	Api key, which could be set by simply calling:
+		PostMasterClient.setApiKey("MY_API_KEY");
+		
+	Domain of Postmaster server which is located in library Settings class
+		Settings.API_DOMAIN
+ 
 ## Usage
 
 See https://www.postmaster.io/docs for tutorials and documentation.

@@ -36,13 +36,15 @@ public class ShipmentTest extends PostMasterTest {
 
     @Test
     public void testCreateShipment() throws HTTPError {
+        
         Shipment sh = PostMasterClient
                 .createShipment()
-                .setTo(Address.create().setCompany("ASLS")
-                        .setContact("John Katchinsky")
-                        .setStreet("1212 Someplace Else Ave.").setCity("Austin")
-                        .setPhoneNumber("1231231239").setState("TX")
-                        .setZipCode("78704"))
+                .setTo(Address.create()
+                        .setContact("John Novak")
+                        .setStreet("1110 Algarita Ave").setCity("Austin")
+                        .setPhoneNumber("919-720-7941").setState("TX")
+                        .setZipCode("78704")
+                        .setCountry("US"))
                 .setCarrier(PostMasterClient.UPS)
                 .setService(PostMasterClient.Service2Day)
                 .setPackageInfo(
@@ -81,7 +83,7 @@ public class ShipmentTest extends PostMasterTest {
 
     @Test
     public void testVoidShipment() throws HTTPError {
-        OperationResult result = Shipment.voidShipment(6080711618461696L);
+        OperationResult result = Shipment.voidShipment(6218562888794112L);
         assertNotNull(result);
         assertEquals("OK", result.getMessage());
     }

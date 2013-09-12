@@ -2,6 +2,7 @@ package io.postmaster.entity.result;
 
 import io.postmaster.entity.TrackingDetailsHistory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONException;
@@ -13,7 +14,7 @@ import com.google.gson.reflect.TypeToken;
 
 public class ShipmentTrackByReferenceResult extends OperationResult {
 
-	private List<TrackingDetailsHistory> trackingHistoryList;
+	private List<TrackingDetailsHistory> trackingHistoryList = new ArrayList<TrackingDetailsHistory>();
 
 	public List<TrackingDetailsHistory> getTrackingHistoryList() {
 		return trackingHistoryList;

@@ -2,6 +2,7 @@ package io.postmaster.entity.result;
 
 import io.postmaster.entity.Shipment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONException;
@@ -15,7 +16,7 @@ public class FetchShipmentResult extends OperationResult{
 
     protected String previousCursor;
     protected String cursor;
-    protected List<Shipment> results;
+    protected List<Shipment> results = new ArrayList<Shipment>();
     
     public String getPreviousCursor() {
         return previousCursor;

@@ -2,6 +2,7 @@ package io.postmaster.entity.result;
 
 import io.postmaster.entity.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONException;
@@ -13,7 +14,7 @@ import com.google.gson.reflect.TypeToken;
 
 public class DeliveryTimeResult extends OperationResult {
 
-	private List<Service> services;
+	private List<Service> services = new ArrayList<Service>();
 
 	public List<Service> getServices() {
 		return services;

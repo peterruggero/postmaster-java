@@ -7,8 +7,10 @@
 /postmaster/.project
 /PostmasterClient/.project
 .settings
-/bin
-/target
+bin
+target
 /PostmasterClient/bin
 /PostmasterClientNonMaven/bin
 /postmaster/target
+
+postmaster/src/test/java/io/postmaster/testtest.java

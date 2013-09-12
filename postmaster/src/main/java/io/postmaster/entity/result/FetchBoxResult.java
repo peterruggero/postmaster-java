@@ -2,6 +2,7 @@ package io.postmaster.entity.result;
 
 import io.postmaster.entity.Box;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONException;
@@ -15,7 +16,7 @@ public class FetchBoxResult extends OperationResult{
 
     protected String previousCursor;
     protected String cursor;
-    protected List<Box> results;
+    protected List<Box> results = new ArrayList<Box>();
     
     public String getPreviousCursor() {
         return previousCursor;

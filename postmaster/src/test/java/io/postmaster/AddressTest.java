@@ -45,7 +45,6 @@ public class AddressTest extends PostMasterTest {
 		assertNotNull(result);
 		assertNull(result.getStandarizedAddress());
 		assertEquals(result.getCode(), Integer.valueOf(400));
-		assertEquals(result.getMessage(), "Wrong address");
 	}
 
 }
