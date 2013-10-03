@@ -14,3 +14,7 @@ target
 /postmaster/target
 
 postmaster/src/test/java/io/postmaster/testtest.java
+
+PostmasterClientNonMaven/.classpath
+
+PostmasterClientNonMaven/.project

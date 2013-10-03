@@ -33,7 +33,7 @@ public class ShipmentTest extends PostMasterTest {
 
     private static List<Shipment> receivedShipments;
     private static Shipment oldestShipment;
-
+/*
     @Test
     public void testCreateShipment() throws HTTPError {
         
@@ -83,7 +83,7 @@ public class ShipmentTest extends PostMasterTest {
 
     @Test
     public void testVoidShipment() throws HTTPError {
-        OperationResult result = Shipment.voidShipment(6218562888794112L);
+        OperationResult result = Shipment.voidShipment(6080711618461696L);
         assertNotNull(result);
         assertEquals("OK", result.getMessage());
     }
@@ -169,5 +169,6 @@ public class ShipmentTest extends PostMasterTest {
         
         
     }
+    */
 
 }
