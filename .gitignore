@@ -18,3 +18,5 @@ postmaster/src/test/java/io/postmaster/testtest.java
 PostmasterClientNonMaven/.classpath
 
 PostmasterClientNonMaven/.project
+
+.classpath
