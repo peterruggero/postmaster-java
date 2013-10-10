@@ -7,7 +7,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.postmaster</groupId>
 	<artifactId>postmaster</artifactId>
-	<version>0.1.6-SNAPSHOT</version>
+	<version>0.1.6</version>
 	<name>postmaster-java</name>
 	<packaging>jar</packaging>
 	<description>Postmaster API Java client</description>
