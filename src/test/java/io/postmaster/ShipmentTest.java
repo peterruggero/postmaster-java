@@ -1,9 +1,9 @@
 
 package io.postmaster;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import io.postmaster.core.PostMasterClient;
 import io.postmaster.entity.Address;
@@ -11,10 +11,11 @@ import io.postmaster.entity.Customs;
 import io.postmaster.entity.CustomsContent;
 import io.postmaster.entity.DeliveryTimeQueryMessage;
 import io.postmaster.entity.MonitorPackageQueryMessage;
+import io.postmaster.entity.MonitorPackageQueryMessage.PackageEvent;
 import io.postmaster.entity.Package;
 import io.postmaster.entity.RateQueryMessage;
 import io.postmaster.entity.Shipment;
-import io.postmaster.entity.MonitorPackageQueryMessage.PackageEvent;
+import io.postmaster.entity.ShipmentLabel;
 import io.postmaster.entity.result.DeliveryTimeResult;
 import io.postmaster.entity.result.FetchShipmentResult;
 import io.postmaster.entity.result.MonitorPackageResult;
@@ -33,10 +34,11 @@ public class ShipmentTest extends PostMasterTest {
 
     private static List<Shipment> receivedShipments;
     private static Shipment oldestShipment;
-/*
+    private static Shipment shipmentToTrack;
+
     @Test
     public void testCreateShipment() throws HTTPError {
-        
+
         Shipment sh = PostMasterClient
                 .createShipment()
                 .setTo(Address.create()
@@ -73,7 +75,11 @@ public class ShipmentTest extends PostMasterTest {
                                                         .setValue("15")
                                                         .setWeight(2.5)
                                                         .setWeightUnits("LB"))))
-                .setReference("Order # 54321");
+                .setReference("Order # 54321")
+                .setLabel(
+                        ShipmentLabel.create().setFormat(ShipmentLabel.LabelFormatPNG)
+                                .setSize(ShipmentLabel.LabelSizeMedium)
+                                .setType(ShipmentLabel.LabelTypeNormal));
 
         ShipmentCreationResult result = sh.createShipment();
         assertNotNull(result);
@@ -93,6 +99,13 @@ public class ShipmentTest extends PostMasterTest {
         FetchShipmentResult result = PostMasterClient.fetch(null, null);
         assertNotNull(result.getResults());
         receivedShipments = result.getResults();
+        for (Shipment shipment : receivedShipments) {
+            if (shipment.getTracking() != null && shipment.getTracking().size() > 0
+                    && shipment.getTracking().get(0) != null) {
+                shipmentToTrack = shipment;
+                break;
+            }
+        }
         oldestShipment = receivedShipments.get(receivedShipments.size() - 1);
     }
 
@@ -103,18 +116,21 @@ public class ShipmentTest extends PostMasterTest {
         // server should have return any convenient message if no tracking info
         // found instead of 500
         ShipmentTrackResult result = Shipment.track(6080711618461696L);
-        if(result.getCode()!=null && result.getCode().equals(400)){
+        if (result.getCode() != null && result.getCode().equals(400)) {
             // notracking data found, skip
         }
-        else{
+        else {
             assertNotNull(result.getTrackingDetails());
         }
     }
 
     @Test
     public void testTrackByReferenceNumber() throws HTTPError {
+        if (shipmentToTrack == null)
+            return;
+
         ShipmentTrackByReferenceResult result = Shipment
-                .trackByReferenceNumber(oldestShipment.getTracking().get(0));
+                .trackByReferenceNumber(shipmentToTrack.getTracking().get(0));
 
         assertNotNull(result);
         if (result.getCode() != null) {
@@ -152,7 +168,7 @@ public class ShipmentTest extends PostMasterTest {
         assertNotNull(result.getRate());
         assertNull(result.getCode());
     }
-    
+
     @Test
     public void testMonitorExternalPackage() throws HTTPError {
         MonitorPackageQueryMessage query = MonitorPackageQueryMessage.create()
@@ -160,15 +176,12 @@ public class ShipmentTest extends PostMasterTest {
                 .addEvent(PackageEvent.Delivered)
                 .addEvent(PackageEvent.Exception)
                 .setTracking("1ZW470V80310800043");
-        
 
         MonitorPackageResult result = Shipment.monitorExternalPackage(query);
 
         assertNotNull(result);
         assertNull(result.getCode());
-        
-        
+
     }
-    */
 
 }

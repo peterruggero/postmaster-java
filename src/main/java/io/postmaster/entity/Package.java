@@ -31,6 +31,9 @@ public class Package {
 	@Expose
 	@SerializedName("customs")
 	private Customs customs;
+	@Expose
+    @SerializedName("label_url")
+    private String labelUrl;
 
 	public Customs getCustoms() {
         return customs;
@@ -122,7 +125,16 @@ public class Package {
 		return this;
 	}
 
-	public Package setDimensions(Number width, Number height, Number length) {
+	public String getLabelUrl() {
+        return labelUrl;
+    }
+
+    public Package setLabelUrl(String labelUrl) {
+        this.labelUrl = labelUrl;
+        return this;
+    }
+
+    public Package setDimensions(Number width, Number height, Number length) {
 		this.width = width;
 		this.height = height;
 		this.length = length;

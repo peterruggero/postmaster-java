@@ -62,6 +62,9 @@ public class Shipment {
 	@Expose
 	@SerializedName("reference")
 	private String reference;
+	@Expose
+    @SerializedName("label")
+    private ShipmentLabel label;
 
 	public static Shipment create() {
 		return new Shipment();
@@ -174,8 +177,18 @@ public class Shipment {
         return cost;
     }
 
-    public void setCost(Number cost) {
+    public Shipment setCost(Number cost) {
         this.cost = cost;
+        return this;
+    }
+    
+    public ShipmentLabel getLabel() {
+        return label;
+    }
+
+    public Shipment setLabel(ShipmentLabel label) {
+        this.label = label;
+        return this;
     }
 
     public ShipmentCreationResult createShipment() throws HTTPError {
